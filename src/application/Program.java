@@ -2,7 +2,9 @@ package application;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
@@ -20,10 +22,14 @@ public class Program {
 			
 			//? = place holder
 			//we will insert values on it
+			
+			//inserting the new value and return the 'Id' number
 			st = conn.prepareStatement("INSERT INTO seller "
 					+ "(Name, Email, BirthDate, BaseSalary, DepartmentId) "
 					+ "VALUES "
-					+ "(?, ?, ?, ?, ?)");
+					+ "(?, ?, ?, ?, ?)",
+					//prepareStatement overload
+					Statement.RETURN_GENERATED_KEYS);
 			
 			//replacing the first '?' by a String (Name)
 			st.setString(1, "Carl Purple");
@@ -41,7 +47,22 @@ public class Program {
 			//the result is an Integer number depending on how many line were changed 
 			int rowsAffected = st.executeUpdate();
 			
-			System.out.println("Done! Rows affected: " + rowsAffected);
+			if(rowsAffected > 0) {
+				//this function return an object of type ResultSet
+				ResultSet rs = st.getGeneratedKeys();
+				while(rs.next()) {
+					//only 1 column including all the 'Id' 
+					//i.e., we need only the value of the first column
+					int id = rs.getInt(1);
+					
+					System.out.println("Done! Id = " + id);
+					
+					//to check if it worked, we should go to mySQL Workbench and check the 'seller' tables
+				}
+			}
+			else {
+				System.out.println("No rows affected!");
+			}
 		}
 		catch(SQLException e) {
 			e.printStackTrace();
