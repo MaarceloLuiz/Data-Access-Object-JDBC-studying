@@ -25,10 +25,14 @@ public class Program {
 			//Updating every salary of sellers in the Department 1 to 2090
 			int rows1 = st.executeUpdate("UPDATE seller SET BaseSalary = 2090 WHERE DepartmentId = 1");
 			
+			/*
 			int x = 1;
 			if(x<2) {
 				throw new SQLException("fake error");
 			}
+			
+			//now, our 'fake error' will pop out and the transaction will be rolled back
+			*/
 			
 			//Updating every salary of sellers in the Department 2 to 3090
 			int rows2 = st.executeUpdate("UPDATE seller SET BaseSalary = 3090 WHERE DepartmentId = 2");
@@ -59,7 +63,5 @@ public class Program {
 
 			//to check if it worked, we should go to mySQL Workbench and check the 'seller' tables
 		}
-		
-		//now, our 'fake error' will pop out and the transaction will be rolled back
 	}
 }
